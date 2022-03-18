@@ -270,6 +270,21 @@
             var falsePositives = 0;
             var falseNegatives = 0;
 
+            for(var key in groundTruth){
+                gt_value = groundTruth[key];
+                predicted_value = modelPredictions[key];
+
+                if(gt_value == 0 && predicted_value == 0){
+                    trueNegatives++;
+                } else if(gt_value == 0 && predicted_value == 1){
+                    falsePositives++;
+                } else if(gt_value == 1 && predicted_value == 0){
+                    falseNegatives++;
+                } else{
+                    truePositives++;
+                }
+            }
+
             predictedTrueRow.append('td')
                             .attr('class', 'innerMatrix')
                             .text(truePositives)
