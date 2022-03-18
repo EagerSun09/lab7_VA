@@ -184,6 +184,30 @@
             // We destroy any existing SVGs since we're going to rebuild it.
             scatterContainer.select('svg').remove()
 
+            scatterContainer.append('div')
+                            .attr('class', 'tooltip')
+                            .style('opacity', 0);
+
+            var mouseover = function(event, d){
+                details = fullData[d.id];
+
+                tooltip = d3.select(containerElement + ' > .tooltip');
+                tooltip.style('left', (event.pageX + 15) + 'px')
+                       .style('top', (event.pageY - 15) + 'px')
+                       .style('opacity', 1)
+                       .html('city_services: ' + details.city_services + 
+                             '\nevents: ' + details.events +
+                             '\nhousing_cost: ' + details.housing_cost +
+                             '\nschools: ' + details.schools +
+                             '\nstreets_sidewalks: ' + details.streets_sidewalks +
+                             '\ntrust_police: ' + details.trust_police);
+            };
+
+            var mouseleave = function(event, d){
+                tooltip = d3.select(containerElement + ' > .tooltip');
+                tooltip.style('opacity', 0);
+            }
+
             // Add the svg
             svg = d3.select(containerElement)
                 .append('svg')
@@ -249,7 +273,8 @@
                         return "black";
                     }
                 })
-
+                .on('mouseover', mouseover)
+                .on('mouseleave', mouseleave)
         }
         /* END SCATTERPLOT CODE */
 
